@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { ItemsList } from "./ItemsList";
 
@@ -21,10 +20,8 @@ export const TodoList = () => {
     fetchTodoList();
   }, []);
 
-  console.log(todoList);
-
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center">
       <p className="text-2xl font-semibold">List of TODOs</p>
       {isLoading ? (
         <p className="mt-4">Loading...</p>
