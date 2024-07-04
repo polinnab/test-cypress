@@ -1,0 +1,22 @@
+[
+  {
+    "id": "b7f5f9b7-d3b4-4dfd-8c3a-29f1f9e2b774",
+    "title": "Buy groceries for the week",
+    "status": "new"
+  },
+  {
+    "id": "3f3e8a3a-6e22-4ad7-b9de-d9e5b4c8b9f3",
+    "title": "Complete the project report",
+    "status": "done"
+  },
+  {
+    "id": "e0e9f4a7-21c8-43e3-9c9f-45a3d1b1d6a8",
+    "title": "Schedule doctor's appointment",
+    "status": "new"
+  },
+  {
+    "id": "7b1d2b3c-4e45-4a5a-8b2f-84b2d9e3c7a6",
+    "title": "Finish reading the book",
+    "status": "done"
+  }
+]
