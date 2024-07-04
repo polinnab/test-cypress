@@ -22,7 +22,9 @@ export const TodoList = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <p className="text-2xl font-semibold">List of TODOs</p>
+      <p data-cy="title" className="text-2xl font-semibold">
+        List of TODOs
+      </p>
       {isLoading ? (
         <p className="mt-4">Loading...</p>
       ) : (

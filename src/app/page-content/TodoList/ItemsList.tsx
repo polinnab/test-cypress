@@ -2,7 +2,7 @@ import { TodoItemType } from "@/types/todos";
 
 export const ItemsList = ({ items }: { items: TodoItemType[] }) => {
   return (
-    <div>
+    <div data-cy="todo-list">
       {items.map((item, index) => (
         <div
           className="py-2 px-4 rounded-md border-2 border-solid border-white mb-2"
