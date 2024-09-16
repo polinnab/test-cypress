@@ -1,24 +1,12 @@
 "use client";
-import { useEffect, useState } from "react";
+import useSWR from "swr";
+
 import { ItemsList } from "./ItemsList";
 
+import { fetcher } from "@/utils";
+
 export const TodoList = () => {
-  const [todoList, setTodoList] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchTodoList = async () => {
-    setIsLoading(true);
-    setTimeout(async () => {
-      const response = await fetch("/database/todos.json");
-      const data = await response.json();
-      setTodoList(data);
-      setIsLoading(false);
-    }, 2000);
-  };
-
-  useEffect(() => {
-    fetchTodoList();
-  }, []);
+  const { data, isLoading } = useSWR("/database/todos.json", fetcher);
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -29,7 +17,7 @@ export const TodoList = () => {
         <p className="mt-4">Loading...</p>
       ) : (
         <div className="mt-4">
-          <ItemsList items={todoList} />
+          <ItemsList items={data} />
         </div>
       )}
     </div>
