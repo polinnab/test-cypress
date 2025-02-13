@@ -20,14 +20,16 @@ export const useDoSomething = () => {
     }, [hookState.paramOne])
 
     useEffect(() => {
-        accumulateParamTwo()
+        if (hookState.paramOne) {
+            accumulateParamTwo()
+        }
     }, [hookState.paramOne, accumulateParamTwo])
 
     const paramOneHandler = (value: string) => {
-        if (hookState.paramThree) {
+        if (!hookState.paramThree) {
             setHookState(prev => ({...prev, paramOne: value}))
         } else {
-            const modifiedParamOne = value + '' + value.split('').reverse()
+            const modifiedParamOne = value + '' + value.split('').reverse().join('')
             setHookState(prev => ({...prev, paramOne: modifiedParamOne, paramThree: false}))
         }
     }
