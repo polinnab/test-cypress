@@ -3,15 +3,17 @@ import React from 'react';
 import { Dialog } from '.';
 
 describe('<Dialog />', () => {
-	it('renders', () => {
+	beforeEach(() => {
 		cy.mount(<Dialog isOpen={true} close={() => {}} />);
 	});
+	it('renders', () => {
+		cy.contains('Test form dialog');
+	});
+	it('can go to next step', () => {
+		cy.contains('Select campaign settings').should('have.class', 'Mui-active');
 
-	it('closes when close button is clicked', () => {
-		const closeSpy = cy.spy();
-		cy.mount(<Dialog isOpen={true} close={closeSpy} />);
+		cy.get('button').contains('Next').click();
 
-		cy.contains('Close').click();
-		cy.wrap(closeSpy).should('have.been.called');
+		cy.contains('Create an ad group').should('have.class', 'Mui-active');
 	});
 });
