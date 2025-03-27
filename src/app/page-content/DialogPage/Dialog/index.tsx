@@ -9,20 +9,28 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import { SecondStep } from './components/SecondStep';
 import { ThirdStep } from './components/ThirdStep';
 import { FirstStep } from './components/FirstStep';
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+const STEPS = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+const STEP_TRIGGERS: Record<number, string[]> = {
+	0: ['campaignName', 'budget'],
+	1: [],
+	2: [],
+};
 
 export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }) => {
 	const [step, setStep] = useState(0);
+	const methods = useForm();
 
 	const changeStep = (stepNumber: number) => setStep(stepNumber);
 
 	const closeDialog = () => {
 		changeStep(0);
+		methods.reset();
 		close();
 	};
 
@@ -32,6 +40,14 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 		close();
 	};
 
+	const handleNextStep = async () => {
+		const fieldsToValidate = STEP_TRIGGERS[step] || [];
+		const isValid = await methods.trigger(fieldsToValidate);
+		if (isValid) {
+			changeStep(step + 1);
+		}
+	};
+
 	const getNecessaryStep = (stepNumber: number) => {
 		switch (stepNumber) {
 			case 1:
@@ -39,7 +55,7 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 			case 2:
 				return <ThirdStep />;
 			default:
-				return <FirstStep />;
+				return <FirstStep submitStep={handleNextStep} />;
 		}
 	};
 
@@ -49,7 +65,7 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 				return (
 					<>
 						<Button onClick={() => changeStep(stepNumber - 1)}>Back</Button>
-						<Button onClick={() => changeStep(stepNumber + 1)}>Next</Button>
+						<Button onClick={handleNextStep}>Next</Button>
 					</>
 				);
 			case 2:
@@ -63,7 +79,7 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 				return (
 					<>
 						<Button onClick={closeDialog}>Close</Button>
-						<Button onClick={() => changeStep(stepNumber + 1)}>Next</Button>
+						<Button onClick={handleNextStep}>Next</Button>
 					</>
 				);
 		}
@@ -75,7 +91,7 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 			<DialogContent>
 				<Box width='60%' sx={{ margin: '0 auto' }}>
 					<Stepper activeStep={step}>
-						{steps.map((label, index) => {
+						{STEPS.map((label, index) => {
 							const stepProps: { completed?: boolean } = {};
 							return (
 								<Step key={index} {...stepProps}>
@@ -85,7 +101,7 @@ export const Dialog = ({ isOpen, close }: { isOpen: boolean; close: () => void }
 						})}
 					</Stepper>
 				</Box>
-				{getNecessaryStep(step)}
+				<FormProvider {...methods}>{getNecessaryStep(step)}</FormProvider>
 			</DialogContent>
 			<DialogActions sx={{ justifyContent: 'space-between' }}>
 				{getNecessaryButtons(step)}
